@@ -6,8 +6,8 @@ from .player import Player, Play
 
 
 class Match:
-    def __init__(self, game_engine, players: List[Player]):
-        self._states: List[State] = []
+    def __init__(self, initial_state: State, game_engine, players: List[Player]):
+        self._states: List[State] = [initial_state]
         self._players: List[Player] = players
         self._game_engine: Game = game_engine
 
@@ -25,25 +25,28 @@ class Match:
 
     def get_players(self):
         return self._players
+    
+    def get_state(self):
+        return self._states[-1]
 
 
 class Game(ABC):
-    @abstractmethod
     @staticmethod
-    def get_match() -> Match:
+    @abstractmethod
+    def get_match(players: List[Player]) -> Match:
         pass
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def get_visible_states(states: List[State], player: Player) -> List[State]:
         pass
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def get_current_player(states: List[State], players: List[Player]) -> Player:
         pass
     
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def update_state(actual_state: State, play: Play) -> State:
         pass
