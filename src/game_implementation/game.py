@@ -34,6 +34,7 @@ class PlayerStateFactory:
 
 
 class NumericGame(Game):
+    round_number = 3
     function_per_play = {
         'solve_challenge': lambda cls: cls._play_solve_challenge,
         'finish_turn': lambda cls: cls._play_finish_turn,
@@ -76,6 +77,12 @@ class NumericGame(Game):
         print(actual_state)
         transition_function = NumericGame.function_per_play[play.name](cls)
         return transition_function(actual_state, play.payload)
+    
+    @staticmethod
+    def is_final_state(state):
+        if state.round == NumericGame.round_number:
+            return True
+        return False
     
     @staticmethod
     def _play_solve_challenge(actual_state: GameState, play: PlayPayload) -> GameState:
