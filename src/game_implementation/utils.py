@@ -75,3 +75,7 @@ def rounds_window(rounds, window_size):
         if len(window) == window_size:
             yield window
             window.pop(0)
+
+
+def get_round_number(round_to_check):
+    return round_to_check[0].round
