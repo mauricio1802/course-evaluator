@@ -5,6 +5,10 @@ from .state import State
 from .player import Player, Play
 
 
+class GameEnded(Exception):
+    pass
+
+
 class Match:
     def __init__(self, initial_state: State, game_engine, players: List[Player]):
         self._states: List[State] = [initial_state]
@@ -16,6 +20,9 @@ class Match:
         return self._game_engine.get_current_player(self._states, self._players)
 
     def move(self):
+        current_state = self.get_current_state()
+        if self._game_engine.is_final_state(current_state):
+            raise GameEnded("The game is over")
         current_player: Player = self.get_current_player()
         visible_states: List[State] = self._game_engine.get_visible_states(self._states, current_player)
         next_move: Play = current_player.play(self._states)
@@ -26,7 +33,7 @@ class Match:
     def get_players(self):
         return self._players
     
-    def get_state(self):
+    def get_current_state(self):
         return self._states[-1]
 
 
@@ -49,4 +56,9 @@ class Game(ABC):
     @staticmethod
     @abstractmethod
     def update_state(actual_state: State, play: Play) -> State:
+        pass
+    
+    @staticmethod
+    @abstractmethod
+    def is_final_state(state: State) -> bool:
         pass
