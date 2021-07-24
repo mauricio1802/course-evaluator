@@ -1,13 +1,4 @@
-from ..utils import round_iterator, rounds_window, get_round_number
-
-
-def total_achievable_points_in_state(state_to_check):
-    challenges = state_to_check.challenges
-    return sum(map(lambda challenge: challenge.reward, challenges))
-
-
-def total_achievable_points_in_round(round_to_check):
-    return sum(map(lambda state: total_achievable_points_in_state(state), round_to_check))
+from ..utils import round_iterator, rounds_window, get_round_number, total_achievable_points_in_round, total_achievable_points_in_state
 
 
 def is_balance(round_to_check, rounds_to_check_against):
