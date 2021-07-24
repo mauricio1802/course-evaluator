@@ -35,6 +35,10 @@ class Match:
     
     def get_current_state(self):
         return self._states[-1]
+    
+    @property
+    def states(self):
+        return self._states
 
 
 class Game(ABC):
