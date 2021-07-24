@@ -47,3 +47,31 @@ def print_state(state):
         print_challenge(challenge)
         print()
     print()
+
+
+def get_player_score(state, player_id):
+    for player in state.players:
+        if player.get_id() == player_id:
+            return player.score
+
+
+def round_iterator(states):
+    actual_round = states[0].round
+    actual_round_states = []
+
+    for state in states:
+        if state.round == actual_round:
+            actual_round_states.append(states)
+        else:
+            yield actual_round_states
+            actual_round_states = [ state ]
+            actual_round = state.round
+
+
+def rounds_window(rounds, window_size):
+    window = []
+    for r in rounds:
+        window.append(r)
+        if len(window) == window_size:
+            yield window
+            window.pop(0)
