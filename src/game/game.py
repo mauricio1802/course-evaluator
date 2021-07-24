@@ -25,7 +25,7 @@ class Match:
             raise GameEnded("The game is over")
         current_player: Player = self.get_current_player()
         visible_states: List[State] = self._game_engine.get_visible_states(self._states, current_player)
-        next_move: Play = current_player.play(self._states)
+        next_move: Play = current_player.play(visible_states)
         actual_state: State = self._states[-1]
         new_state: State = self._game_engine.update_state(actual_state, next_move)
         self._states.append(new_state)
