@@ -62,7 +62,7 @@ def round_iterator(states):
 
     for state in states:
         if state.round == actual_round:
-            actual_round_states.append(states)
+            actual_round_states.append(state)
         else:
             yield actual_round_states
             actual_round_states = [ state ]
