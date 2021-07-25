@@ -1,12 +1,12 @@
 from statistics import mean, stdev
 from ..utils import get_player_score, round_iterator
-
+from ..state import Professor, Student
 
 
 def compute_positions(states):
     first_state = states[0]
     last_state = states[-1]
-    players = first_state.players
+    players = list(filter(lambda p: isinstance(p, Student), first_state.players))
     scores = []
     for player in players:
         start_score = get_player_score(first_state, player.get_id())
@@ -23,7 +23,7 @@ def compute_stability_metric(states):
     players = {}
     metric = 0
     last_positions = {}
-    for player in states[0].players():
+    for player in filter(lambda p: isinstance(p, Student), states[0].players):
         player_id = player.get_id()
         players[player_id] = []
     

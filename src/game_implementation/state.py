@@ -7,6 +7,9 @@ class PlayerRepresentation:
     def __init__(self, id):
         self.player_id = id
     
+    def get_id(self):
+        return self.player_id
+    
 
 class Professor(PlayerRepresentation):
     def __init__(self, id):

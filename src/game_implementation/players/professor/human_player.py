@@ -2,6 +2,7 @@ from ....game import Play
 from ...state import ChallengeDefinition, Challenge, Professor
 from ...game import AddChallengePayload, RemoveChallengePayload
 from ....game import Player
+from ...utils import challenge_repr
 
 class ProfessorHumanPlayer(Professor, Player):
     def __init__(self, id):
@@ -16,7 +17,10 @@ class ProfessorHumanPlayer(Professor, Player):
         return self._last_challenge_id
     
     def play(self, states):
-        play_type = int(input("Select play: "))
+        play_type = int(input(f"""Select play: 
+        1 - End turn
+        2 - Add challenge
+        3 - Remove challenge\n"""))
         if play_type == 1:
             return Play("finish_turn", None)
         elif play_type == 2:
@@ -30,6 +34,9 @@ class ProfessorHumanPlayer(Professor, Player):
             payload = AddChallengePayload(challenge)
             return Play("set_challenge", payload)
         elif play_type == 3:
+            challenges_str = "\n".join(map(challenge_repr, states[-1].challenges))
+            print(f"""Challenges: 
+            {challenges_str}""")
             id_to_remove = int(input("Challenge to remove: "))
             payload = RemoveChallengePayload(challenge_id=id_to_remove)
             return Play("remove_challenge", payload)

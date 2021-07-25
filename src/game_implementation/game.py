@@ -3,8 +3,11 @@ from copy import deepcopy
 from random import shuffle
 from ..game import Id, Play, PlayPayload, Game, Match, Player
 from .state import GameState, Student, Professor, Challenge
-from .utils import print_state
+from ..logging import LoggerFactory
+from .utils import challenge_repr, state_repr
 
+
+LOGGER = LoggerFactory("NumericGame").getChild("Game")
 
 class AddChallengePayload(PlayPayload):
     challenge: Challenge
@@ -44,14 +47,15 @@ class NumericGame(Game):
 
     @staticmethod
     def get_match(players: List[Player]) -> Match:
+        LOGGER.info("Creating Match")
         players_factory = PlayerStateFactory()
         professor = players_factory.build_professor_state()
         students = []
         professor_player = next(filter(lambda p : isinstance(p, Professor), players))
-        professor_player.set_id(professor.player_id)
+        professor_player.set_id(professor.get_id())
         for player in filter(lambda p : isinstance(p, Student), players):
             new_student = players_factory.build_student_state(player.ability, player.base_interest)
-            player.set_id(new_student.player_id)
+            player.set_id(new_student.get_id())
             students.append(new_student)
         shuffle(students)
         initial_state = GameState(
@@ -70,11 +74,10 @@ class NumericGame(Game):
     @staticmethod
     def get_current_player(states: List[GameState], players: List[Player]) -> Player:
         actual_player_id = states[-1].actual_player
-        return next(filter(lambda player: player.player_id == actual_player_id, players))
+        return next(filter(lambda player: player.get_id() == actual_player_id, players))
     
     @classmethod
     def update_state(cls, actual_state: GameState, play: Play) -> GameState:
-        print(actual_state)
         transition_function = NumericGame.function_per_play[play.name](cls)
         return transition_function(actual_state, play.payload)
     
@@ -101,6 +104,7 @@ class NumericGame(Game):
                 solver_index = i
         
         if NumericGame._can_solve(solver, challenge):
+            LOGGER.info(f"Player with id {solver.get_id()} solved challenge with id {challenge.get_id()}")
             new_challenges = deepcopy(actual_state.challenges)
             new_challenges.pop(challenge_index)
             new_players = deepcopy(actual_state.players)
@@ -122,6 +126,7 @@ class NumericGame(Game):
         players = actual_state.players
         actual_player_index = 0
         actual_player_id = actual_state.actual_player
+        LOGGER.info(f"Player with id {actual_player_id} finish her/his turn")
         for i, player in enumerate(players):
             if player.player_id == actual_player_id:
                 actual_player_index = i
@@ -130,12 +135,15 @@ class NumericGame(Game):
             round = actual_state.round + 1 if new_player_index == 0 else actual_state.round,
             challenges = actual_state.challenges,
             players = actual_state.players,
-            actual_player = players[new_player_index].player_id
+            actual_player = players[new_player_index].get_id()
         )
         return new_state
     
     @staticmethod
     def _play_set_challenge(actual_state: GameState, play: PlayPayload) -> GameState:
+        LOGGER.info("Professor is adding a Challenge")
+        LOGGER.info(f"""Challenge added:
+                        {challenge_repr(play.challenge)}""")
         new_challenges = deepcopy(actual_state.challenges)
         new_challenges.append(play.challenge)
         new_state = GameState(

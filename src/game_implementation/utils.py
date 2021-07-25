@@ -1,53 +1,54 @@
 from .state import Student, Professor
 
 
-def print_professor(player):
-    print("Professor")
-    print(f"Id: {player.player_id}")
+def professor_repr(player):
+    return f"Id: {player.player_id}"
 
 
-def print_student(player):
-    print("Student")
-    print(f"Id: {player.player_id}")
-    print(f"Score: {player.score}")
-    print(f"Energy: {player.energy}")
-    print(f"Interest Base: {player.base_interest}")
-    print(f"Interest Variable: {player.variable_interest}")
-    print(f"Ability: {player.ability}")
+def student_repr(player):
+    return f"""
+    Id: {player.player_id}
+    Score: {player.score}
+    Energy: {player.energy}
+    Interest Base: {player.base_interest}
+    Interest Variable: {player.variable_interest}
+    Ability: {player.ability}
+    """
 
 
-def print_player(player):
+def player_repr(player):
     if isinstance(player, Student):
-        print_student(player)
+        return student_repr(player)
     if isinstance(player, Professor):
-        print_professor(player)
+        return professor_repr(player)
 
-def print_challenge(challenge):
-    print(f"Id: {challenge.get_id()}")
-    print(f"Student allowed: {challenge.student_allowed}")
-    print(f"Interest required: {challenge.interest_required}")
-    print(f"Cost: {challenge.cost}")
-    print(f"Reward: {challenge.reward}")
+def challenge_repr(challenge):
+    return f"""
+    Id: {challenge.get_id()}
+    Student allowed: {challenge.student_allowed}
+    Interest required: {challenge.interest_required}
+    Cost: {challenge.cost}
+    Reward: {challenge.reward}
+    """
 
 
-def print_state(state):
-    print()
-    print(f"Actual Player: {state.actual_player}")
-    print(f"Round: {state.round}")
-    print()
-    print("///////////////////////////////////////")
-    print("Players:")
-    for player in state.players:
-        print_player(player)
-        print()
-    print()
-    print("///////////////////////////////////////")
-    print("Challenges:")
-    for challenge in state.challenges:
-        print_challenge(challenge)
-        print()
-    print()
+def state_repr(state):
+    players_str = "\n".join(map(player_repr, state.players))
+    challenges_str = "\n".join(map(challenge_repr, state.challenges))
+    return f"""
+    Actual Player: {state.actual_player}
+    Round: {state.round}
 
+    ///////////////////////////////////////
+
+    Players:
+    {players_str}
+
+    ///////////////////////////////////////
+
+    Challenges:
+    {challenges_str}
+    """
 
 def get_player_score(state, player_id):
     for player in state.players:
