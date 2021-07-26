@@ -37,7 +37,7 @@ class PlayerStateFactory:
 
 
 class NumericGame(Game):
-    round_number = 3
+    round_number = 4
     function_per_play = {
         'solve_challenge': lambda cls: cls._play_solve_challenge,
         'finish_turn': lambda cls: cls._play_finish_turn,
@@ -103,7 +103,7 @@ class NumericGame(Game):
                 solver = player
                 solver_index = i
         
-        if NumericGame._can_solve(solver, challenge):
+        if NumericGame._can_solve(solver, challenge_to_solve):
             LOGGER.info(f"Player with id {solver.get_id()} solved challenge with id {challenge.get_id()}")
             new_challenges = deepcopy(actual_state.challenges)
             new_challenges.pop(challenge_index)
@@ -176,6 +176,8 @@ class NumericGame(Game):
     
     @staticmethod
     def _can_solve(player, challenge):
+        if player.get_id() != challenge.student_allowed:
+            return False
         energy_require = NumericGame._compute_energy(player, challenge)
         player_interest = min(1, player.base_interest + player.variable_interest)
         return energy_require <= player.energy and challenge.interest_required <= player_interest
