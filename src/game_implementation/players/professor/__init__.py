@@ -1,1 +1,2 @@
 from .human_player import ProfessorHumanPlayer
+from .defined_plan_player import ProfessorPlanPlayer

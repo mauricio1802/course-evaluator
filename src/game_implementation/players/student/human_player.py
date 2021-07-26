@@ -12,6 +12,7 @@ class StudentHumanPlayer(Student, Player):
         self.player_id = id
 
     def play(self, states):
+        print(f"Student {self.get_id()} turn")
         play_type = int(input("""Select play: 
         1 - End turn
         2 - Solve challenge\n"""))

@@ -17,6 +17,7 @@ class ProfessorHumanPlayer(Professor, Player):
         return self._last_challenge_id
     
     def play(self, states):
+        print("Professor turn")
         play_type = int(input(f"""Select play: 
         1 - End turn
         2 - Add challenge
