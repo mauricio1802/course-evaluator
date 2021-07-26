@@ -41,6 +41,5 @@ def compute_stability_metric(states):
         positions_mean = mean(positions)
         positions_stdev = stdev(positions)
         last_position = last_positions[player]
-        if not is_stable(last_position, positions_mean, positions_stdev):
-            metric += 1
+        metric += abs(last_position - positions_mean)
     return metric
