@@ -42,6 +42,12 @@ class Challenge:
         self._challenge_definition: ChallengeDefinition = challenge_definition
         self._student_can_solve: Student = student_can_solve 
     
+    def __hash__(self):
+        return hash(self._id)
+    
+    def __eq__(self, other):
+        return self._id == other._id
+    
     @property
     def interest_required(self) -> float:
         return self._challenge_definition.interest_required
