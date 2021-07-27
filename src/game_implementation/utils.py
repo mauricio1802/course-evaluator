@@ -82,10 +82,9 @@ def get_round_number(round_to_check):
     return round_to_check[0].round
 
 
-def total_achievable_points_in_state(state_to_check):
-    challenges = state_to_check.challenges
-    return sum(map(lambda challenge: challenge.reward, challenges))
-
-
 def total_achievable_points_in_round(round_to_check):
-    return sum(map(lambda state: total_achievable_points_in_state(state), round_to_check))
+    challenges_set = set()
+    for state in round_to_check:
+        for challenge in state.challenges:
+            challenges_set.add(challenge)
+    return sum(map(lambda c: c.reward, challenges_set))
