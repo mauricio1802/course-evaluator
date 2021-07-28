@@ -23,10 +23,14 @@ class Student(PlayerRepresentation):
         self.score = 0
         self.base_interest = base_interest 
         self.ability = ability
+        self._variable_interest = 0
     
+    def update_variable_interest(self):
+        self._variable_interest = MockInterest.get_variable_interest()
+
     @property
     def variable_interest(self):
-        return MockInterest.get_variable_interest()
+        return self._variable_interest
 
 
 class ChallengeDefinition:
