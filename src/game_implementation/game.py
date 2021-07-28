@@ -127,14 +127,23 @@ class NumericGame(Game):
         actual_player_index = 0
         actual_player_id = actual_state.actual_player
         LOGGER.info(f"Player with id {actual_player_id} finish her/his turn")
+
         for i, player in enumerate(players):
             if player.player_id == actual_player_id:
                 actual_player_index = i
         new_player_index = (actual_player_index + 1) % len(players)
+        new_players = actual_state.players
+
+        if new_player_index == 0:
+            new_players = deepcopy(new_players)
+            for player in filter(lambda p: isinstance(p, Student), new_players):
+                player.update_variable_interest()
+                player.energy = 100
+
         new_state = GameState(
             round = actual_state.round + 1 if new_player_index == 0 else actual_state.round,
             challenges = actual_state.challenges,
-            players = actual_state.players,
+            players = new_players,
             actual_player = players[new_player_index].get_id()
         )
         return new_state
