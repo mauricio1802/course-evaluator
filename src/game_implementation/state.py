@@ -31,6 +31,10 @@ class Student(PlayerRepresentation):
     @property
     def variable_interest(self):
         return self._variable_interest
+    
+    @property
+    def interest(self):
+        return self.variable_interest + self.base_interest
 
 
 class ChallengeDefinition:

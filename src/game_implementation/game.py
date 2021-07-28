@@ -188,7 +188,7 @@ class NumericGame(Game):
         if player.get_id() != challenge.student_allowed:
             return False
         energy_require = NumericGame._compute_energy(player, challenge)
-        player_interest = min(1, player.base_interest + player.variable_interest)
+        player_interest = min(1, player.interest)
         return energy_require <= player.energy and challenge.interest_required <= player_interest
     
 
