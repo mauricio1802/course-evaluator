@@ -1,2 +1,2 @@
-from .student import StudentHumanPlayer, StudentGreedyPlayer
+from .student import StudentHumanPlayer, StudentGreedyPlayer, StudentOptimalPlayer
 from .professor import ProfessorHumanPlayer, ProfessorPlanPlayer

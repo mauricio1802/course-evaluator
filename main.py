@@ -11,7 +11,7 @@ from src.game_implementation import (
     player_repr 
 )
 from src.game import Play, GameEnded
-from src.game_implementation.players import StudentHumanPlayer, ProfessorHumanPlayer, ProfessorPlanPlayer, StudentGreedyPlayer
+from src.game_implementation.players import StudentHumanPlayer, ProfessorHumanPlayer, ProfessorPlanPlayer, StudentGreedyPlayer, StudentOptimalPlayer
 from src.game_implementation.metrics import achievable_points_trend, compute_stability_metric, balanced_rounds_metric
 from src.logging import LoggerFactory
 
@@ -95,7 +95,8 @@ players = [
     # StudentHumanPlayer(None, 0.5, 6),
     # StudentHumanPlayer(None, 0.5, 3),
     # StudentHumanPlayer(None, 0.5, 5),
-    StudentGreedyPlayer(None, 0.5, 6),
+    # StudentGreedyPlayer(None, 0.5, 6),
+    StudentOptimalPlayer(None, 0.5, 6),
     StudentGreedyPlayer(None, 0.5, 3),
     StudentGreedyPlayer(None, 0.5, 5),
     ProfessorPlanPlayer(None, PROFESSOR_PLAN)

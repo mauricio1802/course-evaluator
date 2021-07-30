@@ -104,7 +104,7 @@ class NumericGame(Game):
                 solver_index = i
         
         if NumericGame._can_solve(solver, challenge_to_solve):
-            LOGGER.info(f"Player with id {solver.get_id()} solved challenge with id {challenge.get_id()}")
+            LOGGER.info(f"Player with id {solver.get_id()} solved challenge with id {challenge_to_solve.get_id()}")
             new_challenges = deepcopy(actual_state.challenges)
             new_challenges.pop(challenge_index)
             new_players = deepcopy(actual_state.players)
