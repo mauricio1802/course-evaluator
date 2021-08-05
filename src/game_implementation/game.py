@@ -37,7 +37,7 @@ class PlayerStateFactory:
 
 
 class NumericGame(Game):
-    round_number = 4
+    round_number = 11
     function_per_play = {
         'solve_challenge': lambda cls: cls._play_solve_challenge,
         'finish_turn': lambda cls: cls._play_finish_turn,

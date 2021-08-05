@@ -1,6 +1,7 @@
 from ...state import Professor
 from ....game import Player
 
+
 class ProfessorPlanPlayer(Professor, Player):
     def __init__(self, id, plan):
         Professor.__init__(self, id)
