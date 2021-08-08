@@ -1,7 +1,7 @@
 from json import load
 from ....game import Player, Play
 from ...game import AddChallengePayload, RemoveChallengePayload
-from ...state import ChallengeDefinition, Challenge, Professor
+from ...state import ChallengeDefinition, Challenge, Professor, Student
 
 class ProfessorChallengesFromJsonPlayer(Professor, Player):
     def __init__(self, id, json_file):
@@ -30,7 +30,7 @@ class ProfessorChallengesFromJsonPlayer(Professor, Player):
     def _generate_plays_per_round(self, number_of_students):
         for challenge in self._challenges:
             challenges = self._generate_for_all_players(challenge, number_of_students)
-            round = challenge['orientation_round']
+            round = challenge['orientation_round'] + 1
             add_plays = list(map(lambda c: Play('set_challenge', AddChallengePayload(c)), challenges))
             try:
                 self._plays_per_round[round].extend(add_plays)
@@ -47,7 +47,7 @@ class ProfessorChallengesFromJsonPlayer(Professor, Player):
     def play(self, states):
         if self._plays_per_round is None:
             self._plays_per_round = {}
-            number_of_students = len(states[-1].players)
+            number_of_students = len(list(filter(lambda p: isinstance(p, Student), states[-1].players)))
             self._generate_plays_per_round(number_of_students)
 
         actual_round = states[-1].round
