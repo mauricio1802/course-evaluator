@@ -18,10 +18,8 @@ class StudentOptimalPlayer(Student, Player):
         actual_state = states[-1]
         if self.challenges_to_solve == []:
             self.challenges_to_solve = self._select_challenges_to_solve(actual_state)
-
-        if self.challenges_to_solve == []:
-            return Play("finish_turn", None)
-        
+            if self.challenges_to_solve == []:
+                return Play("finish_turn", None)
         challenge_to_solve = self.challenges_to_solve.pop(0)
         return Play("solve_challenge", SolveChallenge(challenge_to_solve))
 
@@ -57,4 +55,4 @@ class StudentOptimalPlayer(Student, Player):
         model += lpSum([challenge.cost *variables[i] for i, challenge in enumerate(challenges)]) <= maximum_points
         model += lpSum([challenge.reward*variables[i] for i, challenge in enumerate(challenges)])
         model.solve()
-        return [int(var.name) for var in model.variables()]
+        return [int(var.name) for var in model.variables() if var.value()]
