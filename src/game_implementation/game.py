@@ -28,6 +28,7 @@ class PlayerStateFactory:
     def build_student_state(self, ability, interest_base):
         self._last_id += 1
         student = Student(self._last_id, interest_base, ability)
+        student.update_variable_interest()
         return student
     
     def build_professor_state(self):
