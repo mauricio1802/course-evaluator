@@ -8,9 +8,9 @@ def is_balance(round_to_check, rounds_to_check_against):
     return points_in_round_to_check < points_in_rest_rounds
 
 
-def balanced_rounds_metric(states):
+def balanced_rounds_metric(states, window_size = 4):
     unbalance_rounds = set()
-    for round_set in rounds_window(round_iterator(states), 3):
+    for round_set in rounds_window(round_iterator(states), window_size):
         first_round = round_set[0]
         if not is_balance(first_round, round_set[1:]):
             unbalance_rounds.add(get_round_number(first_round))
