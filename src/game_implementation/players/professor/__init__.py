@@ -1,3 +1,4 @@
 from .human_player import ProfessorHumanPlayer
 from .defined_plan_player import ProfessorPlanPlayer
 from .challenges_from_json_player import ProfessorChallengesFromJsonPlayer
+from .ml_generated_player import MLProfessor
