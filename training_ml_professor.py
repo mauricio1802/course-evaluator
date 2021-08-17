@@ -37,7 +37,9 @@ def player_and_challenges_to_tensor(state: GameState, player_id: int):
     challenges_tensor = challenges_to_tensor(player_challenges)
     player_tensor = player_to_tensor(player_state)
 
-    return np.append(player_tensor, challenges_tensor)
+    unnormalize_tensor = np.append(player_tensor, challenges_tensor)
+    norm = np.linalg.norm(unnormalize_tensor)
+    return unnormalize_tensor / norm
 
 def state_to_tensor(state: GameState):
     players: List[Student] = state.players
