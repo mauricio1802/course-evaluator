@@ -72,20 +72,48 @@ class MLProfessor(Professor, Student):
         players: List[Student] = state.players
         return np.stack(list(map(lambda p: MLProfessor._player_and_challenges_to_tensor(state, p.get_id()), players)))
 
-    @staticmethod
-    def _decode_play_type(value):
+    def _decode_play_type(self, value):
         if value < 0.33:
             return 'finish_turn' 
         if value < 0.66:
             return 'remove_challenge'
         return 'set_challenge'
 
-    @staticmethod
-    def _decode_play(encoded_play, state):
-        play_type = MLProfessor._decode_play_type(encoded_play[0])
+    def _define_player(self, value, number_of_players):
+        seg_length = 1 / number_of_players
+        seg = value // seg_length
+        return seg + 1
+    
+    def _decode_cost(self, value):
+        return value * 1000
+    
+    def _decode_reward(self, value):
+        return value * 10000
+    
+    def _decode_add_challenge_payload(self, encoded_play, state):
+        number_of_players = len(state.players)
+        player = self._define_player(encoded_play[1], number_of_players)
+
+        interest_required = encoded_play[2]
+        cost = self._decode_cost(encoded_play[3])
+        reward = self._decode_reward(encoded_play[4])
+        
+        challenge_id = self._get_challenge_id()
+        challenge_definition = ChallengeDefinition(interest_required, cost, reward)
+        return Challenge(challenge_id ,challenge_definition, player)
+    
+    def _decode_remove_challenge_payload(self, encoded_play, state):
+        pass
+
+    def _decode_play(self, encoded_play, state):
+        play_type = self._decode_play_type(encoded_play[0])
         if play_type == 'finish_turn':
-            pass
+            return Play('finish_turn', None)
+
         if play_type == 'set_challenge':
-            pass
+            add_challenge_payload = self._decode_add_challenge_payload(encoded_play, state)
+            return Play('set_challenge', add_challenge_payload)
+
         if play_type == 'remove_challenge':
-            pass
+            remove_challenge_payload = self._decode_remove_challenge_payload(encoded_play, state)
+            return Play('remove_challenge', remove_challenge_payload)
