@@ -1,3 +1,4 @@
+import numpy as np
 from .state import Student, Professor
 
 
@@ -88,3 +89,13 @@ def total_achievable_points_in_round(round_to_check):
         for challenge in state.challenges:
             challenges_set.add(challenge)
     return sum(map(lambda c: c.reward, challenges_set))
+
+
+def normalize_vector(vector):
+    norm = np.linalg.norm(vector)
+    return vector / norm
+
+
+def sigmoid(value):
+    z = np.exp(-value)
+    return 1 / (1 + z)
