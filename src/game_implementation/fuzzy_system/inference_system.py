@@ -1,7 +1,7 @@
 from itertools import accumulate
 from collections import defaultdict
-from src.fuzzy_logic import FuzzySet
-from src.utils import plot_fuzzy_set
+from .fuzzy_logic import FuzzySet
+from .utils import plot_fuzzy_set
 
 MANDAMI = "mandami"
 LARSEN = "larsen"
