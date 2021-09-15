@@ -1,6 +1,6 @@
 from typing import List
 from ..game import State, Player, Id
-from .fuzzy_system_var_interest import MockInterest
+from .fuzzy_system_var_interest import MockInterest, generate_var_interest
 
 
 class PlayerRepresentation:
@@ -26,15 +26,15 @@ class Student(PlayerRepresentation):
         self._variable_interest = 0
     
     def update_variable_interest(self):
-        self._variable_interest = MockInterest.get_variable_interest()
-
+        self._variable_interest = generate_var_interest()
+    
     @property
     def variable_interest(self):
         return self._variable_interest
-    
+
     @property
     def interest(self):
-        return self.variable_interest + self.base_interest
+        return self._variable_interest + self.base_interest
 
 
 class ChallengeDefinition:
